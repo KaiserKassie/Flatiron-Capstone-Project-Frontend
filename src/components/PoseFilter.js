@@ -1,11 +1,10 @@
 import React from 'react';
 
-function PoseFilter() {
-
+function PoseFilter({poses, setQuery, query, setPoses, setFilteredPoses}) {  
 
   return(
-    <div id='pose-filter'>
-      
+    <div className='filter'>
+      <input type='text' className="search" placeholder="Search poses by name" onChange={(e) => setQuery(e.target.value)}></input>
     </div>
   );
 }

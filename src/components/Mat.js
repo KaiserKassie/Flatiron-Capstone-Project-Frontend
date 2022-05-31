@@ -1,11 +1,37 @@
 import React from 'react';
 
-function Mat({mat}) {
+function Mat({mat, login}) {
+
+  const favMats = login ? login.mats : null
+
+  const isFavorite = favMats ? favMats.find(fav => fav.id === mat.id) : null
   
+  function handleMatFav() {
+    if (login) {
+    fetch(`http://localhost:4000/mat/${mat.id}/fav`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: login.id,
+        mat_id: mat.id
+      })
+    })
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+    } else {
+      alert('Log in or create an account')
+    }
+  };
+
   return(
-    <div className='mat'>
+    <div id='mat' className='list'>
       <img src={mat.image} alt={mat.name}/>
-      <button>♡</button>
+
+      {isFavorite ?
+      <button className='liked-btn' disabled>Added to Favorites ✓</button>
+      : <button className='like-btn' onClick={handleMatFav}>Add to Favorites</button>}
       <h2>{mat.name + " Yoga Mat"}</h2>
       <h3>{mat.brand}</h3>
       <ul>
